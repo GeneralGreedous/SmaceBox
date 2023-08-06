@@ -1,0 +1,54 @@
+{
+    "name": "PlayerController",
+    "maps": [
+        {
+            "name": "MapMovment",
+            "id": "9ebe9d4c-a5c8-4ceb-b185-311fef6b8e31",
+            "actions": [
+                {
+                    "name": "DragCamera",
+                    "type": "Button",
+                    "id": "9f07f631-b73e-4c25-93ee-a071b363714e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RestartCamera",
+                    "type": "Button",
+                    "id": "63d2ae9a-d489-49e1-9ad5-0ab64b1d3e1b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "8bd9b12f-c042-4ddc-a257-30cd02079c8b",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DragCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2b2578a8-beee-4ef1-a024-59107975e7fd",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RestartCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

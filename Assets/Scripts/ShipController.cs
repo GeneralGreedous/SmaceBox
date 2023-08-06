@@ -14,18 +14,30 @@ public class ShipController : MonoBehaviour
     [SerializeField] private float _speed = 1;
     [SerializeField] private GameObject _MyTarget;
     [SerializeField] private float _flyingRange = 10;
+    public float FlyingRange
+    {
+        get { return _flyingRange; }
+        set { _flyingRange = value; }
+    }
+
+
+    [SerializeField] private GameObject _shipModel;
+    public Vector3 shipPosition { get { return _shipModel.transform.position; } }
+
 
     [SerializeField] private AnimationCurve _flightCurveStart;
     [SerializeField] private AnimationCurve _flightCurveFlying;
 
-    [SerializeField] private LineRenderer _lineRenderer;
+    [SerializeField] private LineRenderer _circleRenderer;
+
+
 
     private Coroutine _Coroutine;
 
     private bool _CoroutineIsRunning = false;
 
 
-    
+
 
     private void Awake()
     {
@@ -43,7 +55,7 @@ public class ShipController : MonoBehaviour
         {
             float asd = Vector3.Distance(transform.position, target.transform.position);
 
-            if (Vector3.Distance(transform.position, target.transform.position) < _flyingRange + 0.33f)
+            if (Vector3.Distance(transform.position, target.transform.position) < FlyingRange)
             {
                 _MyTarget = target;
                 MoveMe();
@@ -60,8 +72,8 @@ public class ShipController : MonoBehaviour
         Vector3 startPos = transform.position;
         Vector3 endPos = _MyTarget.transform.position;
         float distance = Vector3.Distance(startPos, endPos);
-        float distanceModifier = Mathf.Lerp(distance / _flyingRange, 1, 0.3f);
-        
+        float distanceModifier = Mathf.Lerp(distance / FlyingRange, 1, 0.3f);
+
 
         while (transform.position != endPos)
         {
@@ -71,15 +83,16 @@ public class ShipController : MonoBehaviour
             //transform.position = Vector3.MoveTowards(transform.position, _MyTarget.transform.position, Time.deltaTime * _speed);
 
 
-            
+
             DrawCircle(100, _flyingRange);
+            CameraController.instance.SetCameraTarget(transform.position);
             yield return null;
         }
         DrawCircle(100, _flyingRange);
         _CoroutineIsRunning = false;
         Debug.Log(time2);
         yield return null;
-        
+
     }
 
     private void MoveMe()
@@ -98,7 +111,8 @@ public class ShipController : MonoBehaviour
 
     private void DrawCircle(int steps, float radius)
     {
-        _lineRenderer.positionCount = steps;
+        _circleRenderer.positionCount = steps;
+        radius -= 0.25f;
         for (int i = 0; i < steps; i++)
         {
             float cirleProgres = (float)i / steps;
@@ -112,7 +126,7 @@ public class ShipController : MonoBehaviour
 
             Vector3 currentPosition = new Vector3(x, y, -0.1f) + transform.position;
 
-            _lineRenderer.SetPosition(i, currentPosition);
+            _circleRenderer.SetPosition(i, currentPosition);
 
 
 
