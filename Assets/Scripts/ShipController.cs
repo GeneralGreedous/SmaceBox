@@ -7,9 +7,9 @@ using UnityEngine.UIElements;
 
 public class ShipController : MonoBehaviour
 {
+    
 
-
-    public static ShipController instance;
+    public static ShipController Instance;
 
     [SerializeField] private float _speed = 1;
     [SerializeField] private GameObject _MyTarget;
@@ -22,26 +22,31 @@ public class ShipController : MonoBehaviour
 
 
     [SerializeField] private GameObject _shipModel;
-    public Vector3 shipPosition { get { return _shipModel.transform.position; } }
+    public Vector3 ShipPosition { get { return _shipModel.transform.position; } }
 
 
     [SerializeField] private AnimationCurve _flightCurveStart;
     [SerializeField] private AnimationCurve _flightCurveFlying;
 
     [SerializeField] private LineRenderer _circleRenderer;
-
+    [SerializeField] private LineRenderer _lineToTargetRenderer;
 
 
     private Coroutine _Coroutine;
 
     private bool _CoroutineIsRunning = false;
 
-
+    private Material _LineToTargetMaterial;
 
 
     private void Awake()
     {
-        instance = this;
+        if (Instance != null)
+        {
+            Debug.Log("GalaxyManager already on scene");
+        }
+        Instance = this;
+        _LineToTargetMaterial = _lineToTargetRenderer.material;
     }
     private void Start()
     {
@@ -85,7 +90,7 @@ public class ShipController : MonoBehaviour
 
 
             DrawCircle(100, _flyingRange);
-            CameraController.instance.SetCameraTarget(transform.position);
+            CameraController.Instance.SetCameraTarget(transform.position);
             yield return null;
         }
         DrawCircle(100, _flyingRange);
@@ -131,6 +136,19 @@ public class ShipController : MonoBehaviour
 
 
         }
+    }
+
+    public void LineToTarget(bool turnOnOff)
+    {
+
+        _lineToTargetRenderer.enabled = turnOnOff;
+    }
+
+    public void LineToTarget(Vector3 position)
+    {
+        _LineToTargetMaterial.SetInt("_InRange", FlyingRange < Vector3.Distance(transform.position, position) ? 0 : 1);
+        _lineToTargetRenderer.SetPosition(0, transform.position);
+        _lineToTargetRenderer.SetPosition(1, position);
     }
 
 

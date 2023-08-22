@@ -13,16 +13,20 @@ public class CameraController : MonoBehaviour
     private bool _isDragging;
     private bool freeCamera=false;
 
-    public static CameraController instance;
+    public static CameraController Instance;
 
     private void Awake()
     {
-        instance = this;
+        if (Instance != null)
+        {
+            Debug.Log("CameraController already on scene");
+        }
+        Instance = this;
     }
 
     public void Start()
     {
-        transform.position = ShipController.instance.transform.position;
+        transform.position = ShipController.Instance.transform.position;
     }
 
     public void SetCameraTarget(Vector3 newPosition)
@@ -49,7 +53,7 @@ public class CameraController : MonoBehaviour
     public void ResetCamera(InputAction.CallbackContext ctx)
     {
         freeCamera=false;
-        transform.position=ShipController.instance.transform.position;
+        transform.position=ShipController.Instance.transform.position;
     }
 
 

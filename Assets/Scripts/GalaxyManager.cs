@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GalaxyManager : MonoBehaviour
 {
+    public static GalaxyManager Instance;
+
 
     [SerializeField] private List<GameObject> galaxySystemList;
 
@@ -11,8 +13,27 @@ public class GalaxyManager : MonoBehaviour
     [SerializeField] private float spawnRadius = 5f;     // The radius within which the objects can be spawned.
     [SerializeField] private int numberOfObjects = 10;   // The number of objects to spawn.
     [SerializeField] private float minDistanceBetweenObjects = 0.5f; // The minimum distance between spawned objects.
-    private void Start()
+
+    private void Awake()
     {
+        if (Instance != null)
+        {
+            Debug.Log("GalaxyManager already on scene");
+        }
+        Instance = this;
+    }
+    private void BeforeStartNewGalaxy()
+    {
+        foreach (var item in galaxySystemList)
+        {
+            Destroy(item);
+        }
+        galaxySystemList = new List<GameObject>();
+    }
+    public void StartCreatingGalaxy()
+    {
+        BeforeStartNewGalaxy();
+       
         for (int i = 0; i < numberOfObjects; i++)
         {
             SpawnRandomObject();
